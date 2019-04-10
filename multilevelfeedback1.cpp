@@ -1,46 +1,50 @@
-#include<stdio.h>
-#include<stdlib.h>
-
-int bu_tm;
-int remaining_tm;
-
-int totalProcess=4;
-int time, tm_Quntm1, tm_Quntm2, *count = 0;
-int *s;
-void FirstComeFirstServed(){
-
-	
+void roundRobinFirst(){
+	tm_Quntm1 = 8;
 	for (count = 0; count < totalProcess; count++)
 	{
-		if (*(s + count).remainingTime > 0)
+		if ((s + count)->remaining_tm <= tm_Quntm1 && (s + count)->remaining_tm > 0)
 		{
 			time = time + (s + count)->remaining_tm;
 			(s + count)->remaining_tm = 0;
 			printf("\n");
-			printf("Process %d finished in first coe first served algorithm. It's\nTurn around time is %dms and Waiting time is %dms.\n", count, time, time - (s + count)->bu_tm);
-		}
-	}
-}
-
-void roundRobinSecond(){
-	tm_Quntm2 = 16;
-	for (count = 0; count < totalProcess; count++)
-	{
-		if ((s + count)->remaining_tm <= tm_Quntm2 && (s + count)->remaining_tm > 0)
-		{
-			time = time + (s + count)->remaining_tm;
-			(s + count)->remaining_tm = 0;
-			printf("\n");
-			printf("Process %d finished in 2nd RR algorithm. It's\nTurn around time is %dms and Waiting time is %dms.\n", count, time, time - (str + count)->burstTime);
+			printf("Process %d finished in 1st RR algorithm. It's\nTurn around time is %dms and Waiting time is %dms.\n", count, time, time - (str + count)->burstTime);
 		}
 		else if ((s + count)->remaining_tm > 0)
 		{
-			(s + count)->remaining_tm = (s + count)->remaining_tm - tm_Quntm2;
-			time = time + tm_Quntm2;
+			(s + count)->remaining_tm = (s + count)->remaining_tm - tm_Quntm1;
+			time = time + tm_Quntm1;
 		}
 	}
 
-	FirstComeFirstServed();
-
+	roundRobinSecond(); 
 }
+
+int main(){
+
+	 
+	(s + count)->bu_tm = (rand() % (8 + 1 - 4)) + 4; 
+	(s + count)->remaning_tm = (s + count)->bu_tm; 
+
+	count = count + 1;
+	(s + count)->bu_tm = (rand() % (24 + 1 - 9)) + 9; 	
+	(s + count)->remaining_tm = (s + count)->bu_tm;
+    count = count + 1;
+	(s + count)->bu_tm = (rand() % (50 + 1 - 25)) + 25;
+	(s + count)->remaining_tm = (s + count)->bu_tm;
+
+	for (count = 3; count < totalProcess; count++){
+		(s + count)->bu_tm = (rand() % (50 + 1 - 4)) + 4; 
+		(s + count)->remaining_tm = (s + count)->bu_tm;
+	}
+
+	
+	printf("Process Number\t\tBurst Time\n");
+	for (count = 0; count < totalProcess; count++)
+		printf("%d\t\t\t%d\n", count, (s + count)->bu_tm);
+
+	printf("\n");
+
+	roundRobinFirst(); 
+	system("pause");
+	return 0;
 
